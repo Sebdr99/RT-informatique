@@ -4,6 +4,7 @@
   "version": "2.2.0",
   "private": true,
   "scripts": {
+    "deploy": "command_to_deploy",
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
