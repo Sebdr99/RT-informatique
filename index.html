@@ -1,0 +1,181 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v4.16.5"><!-- <link rel="preload" as="image" href={src} alt="Hero" /> --><title>RT Informatique | RT Informatique</title><link rel="canonical" href="https://sebdr99.github.io/RT-informatique/"><meta name="description" content="Astroship is a starter website template for Astro built with TailwindCSS."><meta name="robots" content="index, follow"><meta property="og:title" content="RT Informatique - Agence web"><meta property="og:type" content="website"><meta property="og:image" content="https://sebdr99.github.io/opengraph.jpg"><meta property="og:url" content="https://sebdr99.github.io/RT-informatique/"><meta property="og:image:url" content="https://sebdr99.github.io/opengraph.jpg"><meta property="og:image:alt" content="RT Informatique Homepage Screenshot"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content="@https://rt-informatique.com"><meta name="twitter:creator" content="ReisTech"><link rel="stylesheet" href="/RT-informatique/_astro/a-propos.DYoRT3Wj.css"></head> <body> <div class="max-w-screen-xl mx-auto px-5">  <header class="flex flex-col lg:flex-row justify-between items-center my-5">  <div class="flex w-full lg:w-auto items-center justify-between"> <a href="/" class="text-lg"><span class="font-bold text-slate-800">RT</span><span class="text-slate-500">Informatique</span> </a> <div class="block lg:hidden"> <button id="astronav-menu" aria-label="Toggle Menu">  <svg fill="currentColor" class="w-4 h-4 text-gray-800" width="24" height="24" viewBox="0 0 24 24" xmlns="https://www.w3.org/2000/svg"> <title>Toggle Menu</title> <path class="astronav-close-icon astronav-toggle hidden" fill-rule="evenodd" clip-rule="evenodd" d="M18.278 16.864a1 1 0 01-1.414 1.414l-4.829-4.828-4.828 4.828a1 1 0 01-1.414-1.414l4.828-4.829-4.828-4.828a1 1 0 011.414-1.414l4.829 4.828 4.828-4.828a1 1 0 111.414 1.414l-4.828 4.829 4.828 4.828z"></path> <path class="astronav-open-icon astronav-toggle" fill-rule="evenodd" d="M4 5h16a1 1 0 010 2H4a1 1 0 110-2zm0 6h16a1 1 0 010 2H4a1 1 0 010-2zm0 6h16a1 1 0 010 2H4a1 1 0 010-2z"></path> </svg>  </button> </div> </div> <nav class="astronav-items astronav-toggle hidden w-full lg:w-auto mt-2 lg:flex lg:mt-0">  <ul class="flex flex-col lg:flex-row lg:gap-3"> <li> <a href="/nos-services" class="flex lg:px-3 py-2 items-center text-gray-600 hover:text-gray-900"> <span> Nos services</span>  </a> </li><li> <a href="/a-propos" class="flex lg:px-3 py-2 items-center text-gray-600 hover:text-gray-900"> <span> A propos</span>  </a> </li><li> <a href="/blog" class="flex lg:px-3 py-2 items-center text-gray-600 hover:text-gray-900"> <span> Blog</span>  </a> </li> </ul>  </nav>  <script>(function(){const closeOnClick = false;
+
+["DOMContentLoaded", "astro:after-swap"].forEach((event) => {
+  document.addEventListener(event, addListeners);
+});
+
+// Function to clone and replace elements
+function cloneAndReplace(element) {
+  const clone = element.cloneNode(true);
+  element.parentNode.replaceChild(clone, element);
+}
+
+function addListeners() {
+  // Clean up existing listeners
+  const oldMenuButton = document.getElementById("astronav-menu");
+  if (oldMenuButton) {
+    cloneAndReplace(oldMenuButton);
+  }
+
+  const oldDropdownMenus = document.querySelectorAll(".astronav-dropdown");
+  oldDropdownMenus.forEach((menu) => {
+    cloneAndReplace(menu);
+  });
+
+  // Mobile nav toggle
+  const menuButton = document.getElementById("astronav-menu");
+  menuButton && menuButton.addEventListener("click", toggleMobileNav);
+
+  // Dropdown menus
+  const dropdownMenus = document.querySelectorAll(".astronav-dropdown");
+  dropdownMenus.forEach((menu) => {
+    const button = menu.querySelector("button");
+    button &&
+      button.addEventListener("click", (event) =>
+        toggleDropdownMenu(event, menu, dropdownMenus)
+      );
+
+    // Handle Submenu Dropdowns
+    const dropDownSubmenus = menu.querySelectorAll(
+      ".astronav-dropdown-submenu"
+    );
+
+    dropDownSubmenus.forEach((submenu) => {
+      const submenuButton = submenu.querySelector("button");
+      submenuButton &&
+        submenuButton.addEventListener("click", (event) => {
+          event.stopImmediatePropagation();
+          toggleSubmenuDropdown(event, submenu);
+        });
+    });
+  });
+
+  // Clicking away from dropdown will remove the dropdown class
+  document.addEventListener("click", closeAllDropdowns);
+
+  if (closeOnClick) {
+    handleCloseOnClick();
+  }
+}
+
+function toggleMobileNav() {
+  [...document.querySelectorAll(".astronav-toggle")].forEach((el) => {
+    el.classList.toggle("hidden");
+  });
+}
+
+function toggleDropdownMenu(event, menu, dropdownMenus) {
+  toggleMenu(menu);
+
+  // Close one dropdown when selecting another
+  Array.from(dropdownMenus)
+    .filter((el) => el !== menu && !menu.contains(el))
+    .forEach(closeMenu);
+
+  event.stopPropagation();
+}
+
+function toggleSubmenuDropdown(event, submenu) {
+  event.stopPropagation();
+  toggleMenu(submenu);
+
+  // Close sibling submenus at the same nesting level
+  const siblingSubmenus = submenu
+    .closest(".astronav-dropdown")
+    .querySelectorAll(".astronav-dropdown-submenu");
+  Array.from(siblingSubmenus)
+    .filter((el) => el !== submenu && !submenu.contains(el))
+    .forEach(closeMenu);
+}
+
+function closeAllDropdowns(event) {
+  const dropdownMenus = document.querySelectorAll(".dropdown-toggle");
+  const dropdownParent = document.querySelectorAll(
+    ".astronav-dropdown, .astronav-dropdown-submenu"
+  );
+  const isButtonInsideDropdown = [
+    ...document.querySelectorAll(
+      ".astronav-dropdown button, .astronav-dropdown-submenu button, #astronav-menu"
+    ),
+  ].some((button) => button.contains(event.target));
+  if (!isButtonInsideDropdown) {
+    dropdownMenus.forEach((d) => {
+      // console.log("I ran", d);
+      // if (!d.contains(event.target)) {
+      d.classList.remove("open");
+      d.removeAttribute("open");
+      d.classList.add("hidden");
+      // }
+    });
+    dropdownParent.forEach((d) => {
+      d.classList.remove("open");
+      d.removeAttribute("open");
+      d.setAttribute("aria-expanded", "false");
+    });
+  }
+}
+
+function toggleMenu(menu) {
+  menu.classList.toggle("open");
+  const expanded = menu.getAttribute("aria-expanded") === "true";
+  menu.setAttribute("aria-expanded", expanded ? "false" : "true");
+  menu.hasAttribute("open")
+    ? menu.removeAttribute("open")
+    : menu.setAttribute("open", "");
+
+  const dropdownToggle = menu.querySelector(".dropdown-toggle");
+  const dropdownExpanded = dropdownToggle.getAttribute("aria-expanded");
+  dropdownToggle.classList.toggle("hidden");
+  dropdownToggle.setAttribute(
+    "aria-expanded",
+    dropdownExpanded === "true" ? "false" : "true"
+  );
+}
+
+function closeMenu(menu) {
+  // console.log("closing", menu);
+  menu.classList.remove("open");
+  menu.removeAttribute("open");
+  menu.setAttribute("aria-expanded", "false");
+  const dropdownToggles = menu.querySelectorAll(".dropdown-toggle");
+  dropdownToggles.forEach((toggle) => {
+    toggle.classList.add("hidden");
+    toggle.setAttribute("aria-expanded", "false");
+  });
+}
+
+function handleCloseOnClick() {
+  const navMenuItems = document.querySelector(".astronav-items");
+  const navToggle = document.getElementById("astronav-menu");
+  const navLink = navMenuItems && navMenuItems.querySelectorAll("a");
+
+  const MenuIcons = navToggle.querySelectorAll(".astronav-toggle");
+
+  navLink &&
+    navLink.forEach((item) => {
+      item.addEventListener("click", () => {
+        navMenuItems?.classList.add("hidden");
+        MenuIcons.forEach((el) => {
+          el.classList.toggle("hidden");
+        });
+      });
+    });
+}
+})();</script> <div> <div class="hidden lg:flex items-center gap-4"> <a href="/contact" class="rounded text-center transition focus-visible:ring-2 ring-offset-2 ring-gray-200 px-4 py-2 bg-black text-white hover:bg-gray-800  border-2 border-transparent">Contact </a> </div> </div> </header>  </div>  <div class="max-w-screen-xl mx-auto px-5">  <main class="grid lg:grid-cols-2 place-items-center pt-16 pb-8 md:pt-12 md:pb-24"> <div class="py-6 md:order-1 hidden md:block"> <picture> <source srcset="/RT-informatique/_astro/hero.Cz8gfVqT_Z1w7GrL.webp 200w, /RT-informatique/_astro/hero.Cz8gfVqT_z4mOz.webp 400w, /RT-informatique/_astro/hero.Cz8gfVqT_Z2oUGH1.webp 600w" type="image/webp" sizes="(max-width: 800px) 100vw, 620px"> <img src="/RT-informatique/_astro/hero.Cz8gfVqT_1sj4PK.png" srcset="/RT-informatique/_astro/hero.Cz8gfVqT_Yg21E.png 200w, /RT-informatique/_astro/hero.Cz8gfVqT_Z1YJ2uV.png 400w, /RT-informatique/_astro/hero.Cz8gfVqT_6s1Lp.png 600w" alt="Astronaut in the air" sizes="(max-width: 800px) 100vw, 620px" loading="eager" width="1098" height="766" decoding="async"> </picture> </div> <div> <h1 class="text-5xl lg:text-6xl xl:text-7xl font-bold lg:tracking-tight xl:tracking-tighter">
+Experts en solutions informatiques
+</h1> <p class="text-lg mt-4 text-slate-600 max-w-xl">
+Chez RT Informatique, nous propulsons les particuliers et vos entreprise vers de nouveaux sommets grâce à des solutions informatiques innovantes, une expertise en création de sites internet et un service technique de pointe.
+</p></div> </main> <div class="mt-16 md:mt-0"> <h2 class="text-4xl lg:text-5xl font-bold lg:tracking-tight">
+Tout ce qu'il vous faut pour réussir avec vos solutions informatiques
+</h2> <p class="text-lg mt-4 text-slate-600">
+Chez RT Informatique, nous utilisons des outils de pointe et des technologies innovantes pour vous offrir des solutions informatiques performantes et optimisées. Nous allions expertise technique et innovation pour vous fournir des solutions sur mesure, adaptées à vos besoins </p> </div> <div class="grid sm:grid-cols-2 md:grid-cols-3 mt-16 gap-16"> <div class="flex gap-4 items-start"> <div class="mt-1 bg-black rounded-full  p-2 w-8 h-8 shrink-0"> <svg width="1em" height="1em" viewBox="0 0 24 24" class="text-white" data-icon="bx:bxs-cart">  <symbol id="ai:bx:bxs-cart"><path d="M21.822 7.431A1 1 0 0 0 21 7H7.333L6.179 4.23A1.994 1.994 0 0 0 4.333 3H2v2h2.333l4.744 11.385A1 1 0 0 0 10 17h8c.417 0 .79-.259.937-.648l3-8a1 1 0 0 0-.115-.921z" fill="currentColor"/><circle cx="10.5" cy="19.5" r="1.5" fill="currentColor"/><circle cx="17.5" cy="19.5" r="1.5" fill="currentColor"/></symbol><use xlink:href="#ai:bx:bxs-cart"></use>  </svg> </div> <div> <h3 class="font-semibold text-lg">Vente de matériel informatique</h3>  <p class="text-slate-500 mt-2 leading-relaxed">Nous proposons une large gamme de produits, allant des ordinateurs de bureau et portables aux périphériques et accessoires, avec installation et configuration sur-mesure.</p> </div> </div><div class="flex gap-4 items-start"> <div class="mt-1 bg-black rounded-full  p-2 w-8 h-8 shrink-0"> <svg width="1em" height="1em" viewBox="0 0 24 24" class="text-white" data-icon="bx:bxs-wrench">  <symbol id="ai:bx:bxs-wrench"><path d="M21.512 6.112l-3.89 3.889l-3.535-3.536l3.889-3.889a6.501 6.501 0 0 0-8.484 8.486l-6.276 6.275a.999.999 0 0 0 0 1.414l2.122 2.122a.999.999 0 0 0 1.414 0l6.275-6.276a6.501 6.501 0 0 0 7.071-1.414a6.504 6.504 0 0 0 1.414-7.071z" fill="currentColor"/></symbol><use xlink:href="#ai:bx:bxs-wrench"></use>  </svg> </div> <div> <h3 class="font-semibold text-lg">Assistance informatique et dépannage</h3>  <p class="text-slate-500 mt-2 leading-relaxed">Diagnostic des pannes, réparation de matériel, nettoyage de virus et optimisation des performances, pour un système toujours performant.</p> </div> </div><div class="flex gap-4 items-start"> <div class="mt-1 bg-black rounded-full  p-2 w-8 h-8 shrink-0"> <svg width="1em" height="1em" viewBox="0 0 24 24" class="text-white" data-icon="bx:bxs-window-alt">  <symbol id="ai:bx:bxs-window-alt"><path d="M20 3H4c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V5c0-1.103-.897-2-2-2zm-3 3h2v2h-2V6zm-3 0h2v2h-2V6zM4 19v-9h16.001l.001 9H4z" fill="currentColor"/></symbol><use xlink:href="#ai:bx:bxs-window-alt"></use>  </svg> </div> <div> <h3 class="font-semibold text-lg">Création de sites internet vitrine et e-commerce</h3>  <p class="text-slate-500 mt-2 leading-relaxed">Conception de sites web avec un design responsive, intégration de systèmes de paiement, gestion de contenu simplifiée et stratégie digitale.</p> </div> </div><div class="flex gap-4 items-start"> <div class="mt-1 bg-black rounded-full  p-2 w-8 h-8 shrink-0"> <svg width="1em" height="1em" viewBox="0 0 24 24" class="text-white" data-icon="bx:bxs-analyse">  <symbol id="ai:bx:bxs-analyse"><path d="M4.626 8.878a7.937 7.937 0 0 1 1.71-2.541a7.92 7.92 0 0 1 2.542-1.71a8.12 8.12 0 0 1 6.13-.041A2.49 2.49 0 0 0 17.5 7C18.886 7 20 5.886 20 4.5S18.886 2 17.5 2c-.689 0-1.312.276-1.763.725c-2.431-.973-5.223-.958-7.635.059c-1.19.5-2.26 1.22-3.18 2.139A9.98 9.98 0 0 0 2 12h2c0-1.086.211-2.136.626-3.122zm14.747 6.244c-.401.952-.977 1.808-1.71 2.541s-1.589 1.309-2.542 1.71a8.12 8.12 0 0 1-6.13.041A2.488 2.488 0 0 0 6.5 17C5.114 17 4 18.114 4 19.5S5.114 22 6.5 22c.689 0 1.312-.276 1.763-.725A9.973 9.973 0 0 0 12 22a9.983 9.983 0 0 0 9.217-6.102A9.992 9.992 0 0 0 22 12h-2a7.993 7.993 0 0 1-.627 3.122z" fill="currentColor"/><path d="M12 7.462c-2.502 0-4.538 2.036-4.538 4.538S9.498 16.538 12 16.538c2.502 0 4.538-2.036 4.538-4.538S14.502 7.462 12 7.462z" fill="currentColor"/></symbol><use xlink:href="#ai:bx:bxs-analyse"></use>  </svg> </div> <div> <h3 class="font-semibold text-lg">Audit et conseils en transformation digitale</h3>  <p class="text-slate-500 mt-2 leading-relaxed">Nous réalisons un audit complet de vos outils actuels et vous proposons des recommandations pour une transition numérique réussie, accompagnée d&#39;une formation adaptée.</p> </div> </div><div class="flex gap-4 items-start"> <div class="mt-1 bg-black rounded-full  p-2 w-8 h-8 shrink-0"> <svg width="1em" height="1em" viewBox="0 0 24 24" class="text-white" data-icon="bx:bxs-server">  <symbol id="ai:bx:bxs-server"><path d="M20 3H4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-5 5h-2V6h2zm4 0h-2V6h2zm1 5H4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2zm-5 5h-2v-2h2zm4 0h-2v-2h2z" fill="currentColor"/></symbol><use xlink:href="#ai:bx:bxs-server"></use>  </svg> </div> <div> <h3 class="font-semibold text-lg">Maintenance et dépannage à distance et sur site</h3>  <p class="text-slate-500 mt-2 leading-relaxed">Assistance téléphonique, gestion des mises à jour logicielles, monitoring à distance et gestion des sauvegardes pour une maintenance optimale.</p> </div> </div><div class="flex gap-4 items-start"> <div class="mt-1 bg-black rounded-full  p-2 w-8 h-8 shrink-0"> <svg width="1em" height="1em" viewBox="0 0 24 24" class="text-white" data-icon="bx:bx-terminal">  <symbol id="ai:bx:bx-terminal"><path fill="currentColor" d="M12 14h6v2h-6zM6.293 9.707L8.586 12l-2.293 2.293l1.414 1.414L11.414 12L7.707 8.293z"/><path fill="currentColor" d="M20 4H4c-1.103 0-2 .897-2 2v12c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2M4 18V6h16l.002 12z"/></symbol><use xlink:href="#ai:bx:bx-terminal"></use>  </svg> </div> <div> <h3 class="font-semibold text-lg">Développement d&#39;applications web</h3>  <p class="text-slate-500 mt-2 leading-relaxed">Nous développons des applications web progressives, des portails clients et intégrons des API, avec tests et déploiement complet.</p> </div> </div> </div> <div class="bg-black p-8 md:px-20 md:py-20 mt-20 mx-auto max-w-5xl rounded-lg flex flex-col items-center text-center"> <h2 class="text-white text-4xl md:text-6xl tracking-tight">
+Des solutions informatiques à votre mesure
+</h2> <p class="text-slate-400 mt-4 text-lg md:text-xl">
+Intégrez des outils et des ressources variés pour optimiser votre infrastructure informatique, tout en assurant des performances maximales. Notre expertise vous garantit une architecture robuste, adaptée à vos besoins, et optimisée pour une gestion efficace. </p><div class="flex mt-5"> <a href="/contact" class="rounded text-center transition focus-visible:ring-2 ring-offset-2 ring-gray-200 px-5 py-2.5 bg-white text-black   border-2 border-transparent">Prenez en main votre transformation numérique dès aujourd'hui ! </a> </div> </div>  </div>  <footer class="my-20"> <p class="text-center text-sm text-slate-500">
+Copyright © 2024 ReisTech. Tout droit reservé.
+</p> <p class="text-center text-xs text-slate-500 mt-1">
+Fait par<a href="https://rt-informatique.com" target="_blank" rel="noopener" class="hover:underline">
+ReisTech
+</a> </p> <p class="text-center text-xs text-slate-500 mt-1"> <a href="/mentions-legales" target="_blank" rel="noopener" class="hover:underline">
+Mentions légales
+</a> </p> </footer>  </body> </html>

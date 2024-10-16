@@ -1,0 +1,173 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v4.16.5"><!-- <link rel="preload" as="image" href={src} alt="Hero" /> --><title>Vente de matériel informatique | RT Informatique</title><link rel="canonical" href="https://sebdr99.github.io/RT-informatique/vente-de-materiel-informatique/"><meta name="description" content="Astroship is a starter website template for Astro built with TailwindCSS."><meta name="robots" content="index, follow"><meta property="og:title" content="RT Informatique - Agence web"><meta property="og:type" content="website"><meta property="og:image" content="https://sebdr99.github.io/opengraph.jpg"><meta property="og:url" content="https://sebdr99.github.io/RT-informatique/vente-de-materiel-informatique/"><meta property="og:image:url" content="https://sebdr99.github.io/opengraph.jpg"><meta property="og:image:alt" content="RT Informatique Homepage Screenshot"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content="@https://rt-informatique.com"><meta name="twitter:creator" content="ReisTech"><link rel="stylesheet" href="/RT-informatique/_astro/a-propos.DYoRT3Wj.css"></head> <body> <div class="max-w-screen-xl mx-auto px-5">  <header class="flex flex-col lg:flex-row justify-between items-center my-5">  <div class="flex w-full lg:w-auto items-center justify-between"> <a href="/" class="text-lg"><span class="font-bold text-slate-800">RT</span><span class="text-slate-500">Informatique</span> </a> <div class="block lg:hidden"> <button id="astronav-menu" aria-label="Toggle Menu">  <svg fill="currentColor" class="w-4 h-4 text-gray-800" width="24" height="24" viewBox="0 0 24 24" xmlns="https://www.w3.org/2000/svg"> <title>Toggle Menu</title> <path class="astronav-close-icon astronav-toggle hidden" fill-rule="evenodd" clip-rule="evenodd" d="M18.278 16.864a1 1 0 01-1.414 1.414l-4.829-4.828-4.828 4.828a1 1 0 01-1.414-1.414l4.828-4.829-4.828-4.828a1 1 0 011.414-1.414l4.829 4.828 4.828-4.828a1 1 0 111.414 1.414l-4.828 4.829 4.828 4.828z"></path> <path class="astronav-open-icon astronav-toggle" fill-rule="evenodd" d="M4 5h16a1 1 0 010 2H4a1 1 0 110-2zm0 6h16a1 1 0 010 2H4a1 1 0 010-2zm0 6h16a1 1 0 010 2H4a1 1 0 010-2z"></path> </svg>  </button> </div> </div> <nav class="astronav-items astronav-toggle hidden w-full lg:w-auto mt-2 lg:flex lg:mt-0">  <ul class="flex flex-col lg:flex-row lg:gap-3"> <li> <a href="/nos-services" class="flex lg:px-3 py-2 items-center text-gray-600 hover:text-gray-900"> <span> Nos services</span>  </a> </li><li> <a href="/a-propos" class="flex lg:px-3 py-2 items-center text-gray-600 hover:text-gray-900"> <span> A propos</span>  </a> </li><li> <a href="/blog" class="flex lg:px-3 py-2 items-center text-gray-600 hover:text-gray-900"> <span> Blog</span>  </a> </li> </ul>  </nav>  <script>(function(){const closeOnClick = false;
+
+["DOMContentLoaded", "astro:after-swap"].forEach((event) => {
+  document.addEventListener(event, addListeners);
+});
+
+// Function to clone and replace elements
+function cloneAndReplace(element) {
+  const clone = element.cloneNode(true);
+  element.parentNode.replaceChild(clone, element);
+}
+
+function addListeners() {
+  // Clean up existing listeners
+  const oldMenuButton = document.getElementById("astronav-menu");
+  if (oldMenuButton) {
+    cloneAndReplace(oldMenuButton);
+  }
+
+  const oldDropdownMenus = document.querySelectorAll(".astronav-dropdown");
+  oldDropdownMenus.forEach((menu) => {
+    cloneAndReplace(menu);
+  });
+
+  // Mobile nav toggle
+  const menuButton = document.getElementById("astronav-menu");
+  menuButton && menuButton.addEventListener("click", toggleMobileNav);
+
+  // Dropdown menus
+  const dropdownMenus = document.querySelectorAll(".astronav-dropdown");
+  dropdownMenus.forEach((menu) => {
+    const button = menu.querySelector("button");
+    button &&
+      button.addEventListener("click", (event) =>
+        toggleDropdownMenu(event, menu, dropdownMenus)
+      );
+
+    // Handle Submenu Dropdowns
+    const dropDownSubmenus = menu.querySelectorAll(
+      ".astronav-dropdown-submenu"
+    );
+
+    dropDownSubmenus.forEach((submenu) => {
+      const submenuButton = submenu.querySelector("button");
+      submenuButton &&
+        submenuButton.addEventListener("click", (event) => {
+          event.stopImmediatePropagation();
+          toggleSubmenuDropdown(event, submenu);
+        });
+    });
+  });
+
+  // Clicking away from dropdown will remove the dropdown class
+  document.addEventListener("click", closeAllDropdowns);
+
+  if (closeOnClick) {
+    handleCloseOnClick();
+  }
+}
+
+function toggleMobileNav() {
+  [...document.querySelectorAll(".astronav-toggle")].forEach((el) => {
+    el.classList.toggle("hidden");
+  });
+}
+
+function toggleDropdownMenu(event, menu, dropdownMenus) {
+  toggleMenu(menu);
+
+  // Close one dropdown when selecting another
+  Array.from(dropdownMenus)
+    .filter((el) => el !== menu && !menu.contains(el))
+    .forEach(closeMenu);
+
+  event.stopPropagation();
+}
+
+function toggleSubmenuDropdown(event, submenu) {
+  event.stopPropagation();
+  toggleMenu(submenu);
+
+  // Close sibling submenus at the same nesting level
+  const siblingSubmenus = submenu
+    .closest(".astronav-dropdown")
+    .querySelectorAll(".astronav-dropdown-submenu");
+  Array.from(siblingSubmenus)
+    .filter((el) => el !== submenu && !submenu.contains(el))
+    .forEach(closeMenu);
+}
+
+function closeAllDropdowns(event) {
+  const dropdownMenus = document.querySelectorAll(".dropdown-toggle");
+  const dropdownParent = document.querySelectorAll(
+    ".astronav-dropdown, .astronav-dropdown-submenu"
+  );
+  const isButtonInsideDropdown = [
+    ...document.querySelectorAll(
+      ".astronav-dropdown button, .astronav-dropdown-submenu button, #astronav-menu"
+    ),
+  ].some((button) => button.contains(event.target));
+  if (!isButtonInsideDropdown) {
+    dropdownMenus.forEach((d) => {
+      // console.log("I ran", d);
+      // if (!d.contains(event.target)) {
+      d.classList.remove("open");
+      d.removeAttribute("open");
+      d.classList.add("hidden");
+      // }
+    });
+    dropdownParent.forEach((d) => {
+      d.classList.remove("open");
+      d.removeAttribute("open");
+      d.setAttribute("aria-expanded", "false");
+    });
+  }
+}
+
+function toggleMenu(menu) {
+  menu.classList.toggle("open");
+  const expanded = menu.getAttribute("aria-expanded") === "true";
+  menu.setAttribute("aria-expanded", expanded ? "false" : "true");
+  menu.hasAttribute("open")
+    ? menu.removeAttribute("open")
+    : menu.setAttribute("open", "");
+
+  const dropdownToggle = menu.querySelector(".dropdown-toggle");
+  const dropdownExpanded = dropdownToggle.getAttribute("aria-expanded");
+  dropdownToggle.classList.toggle("hidden");
+  dropdownToggle.setAttribute(
+    "aria-expanded",
+    dropdownExpanded === "true" ? "false" : "true"
+  );
+}
+
+function closeMenu(menu) {
+  // console.log("closing", menu);
+  menu.classList.remove("open");
+  menu.removeAttribute("open");
+  menu.setAttribute("aria-expanded", "false");
+  const dropdownToggles = menu.querySelectorAll(".dropdown-toggle");
+  dropdownToggles.forEach((toggle) => {
+    toggle.classList.add("hidden");
+    toggle.setAttribute("aria-expanded", "false");
+  });
+}
+
+function handleCloseOnClick() {
+  const navMenuItems = document.querySelector(".astronav-items");
+  const navToggle = document.getElementById("astronav-menu");
+  const navLink = navMenuItems && navMenuItems.querySelectorAll("a");
+
+  const MenuIcons = navToggle.querySelectorAll(".astronav-toggle");
+
+  navLink &&
+    navLink.forEach((item) => {
+      item.addEventListener("click", () => {
+        navMenuItems?.classList.add("hidden");
+        MenuIcons.forEach((el) => {
+          el.classList.toggle("hidden");
+        });
+      });
+    });
+}
+})();</script> <div> <div class="hidden lg:flex items-center gap-4"> <a href="/contact" class="rounded text-center transition focus-visible:ring-2 ring-offset-2 ring-gray-200 px-4 py-2 bg-black text-white hover:bg-gray-800  border-2 border-transparent">Contact </a> </div> </div> </header>  </div>  <div class="max-w-screen-xl mx-auto px-5">  <div class="mt-16 text-center"> <h1 class="text-4xl lg:text-5xl font-bold lg:tracking-tight"> Vente de matériel informatique </h1> <p class="text-lg mt-4 text-slate-600"> Nous proposons une large gamme de matériel informatique pour particuliers et professionnels. Que vous ayez besoin d'un PC, d'une imprimante, ou d'accessoires, nous avons tout ce qu'il vous faut. Livraison rapide sous 24 à 48h si commande passée avant 15h. </p> </div> <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mx-auto max-w-screen-lg mt-12"> <div class="flex flex-col border-2 border-gray-300 p-6 rounded-md"> <h4 class="font-bold text-gray-800 mb-4">Ordinateurs et périphériques</h4> <ul class="list-disc pl-5 space-y-2 text-gray-600"> <li>Ordinateurs de bureau et portables de marques reconnues.</li><li>Périphériques : souris, claviers, écrans, imprimantes, et plus.</li><li>Composants informatiques pour des upgrades sur mesure.</li><li>Accessoires divers pour améliorer votre expérience utilisateur.</li> </ul> </div><div class="flex flex-col border-2 border-gray-300 p-6 rounded-md"> <h4 class="font-bold text-gray-800 mb-4">Conseil personnalisé</h4> <ul class="list-disc pl-5 space-y-2 text-gray-600"> <li>Évaluation de vos besoins pour choisir le matériel adapté.</li><li>Solutions pour les particuliers, PME, et grandes entreprises.</li><li>Réponses techniques sur les produits les plus performants.</li><li>Optimisation de votre parc informatique selon votre budget.</li> </ul> </div><div class="flex flex-col border-2 border-gray-300 p-6 rounded-md"> <h4 class="font-bold text-gray-800 mb-4">Composants et accessoires</h4> <ul class="list-disc pl-5 space-y-2 text-gray-600"> <li>Large choix de disques durs, SSD, barrettes de RAM, et CPU.</li><li>Composants réseaux pour une connexion performante et stable.</li><li>Cartes graphiques, boîtiers et alimentations pour gaming ou bureautique.</li><li>Périphériques de stockage et solutions de sauvegarde.</li> </ul> </div><div class="flex flex-col border-2 border-gray-300 p-6 rounded-md"> <h4 class="font-bold text-gray-800 mb-4">Livraison rapide</h4> <ul class="list-disc pl-5 space-y-2 text-gray-600"> <li>Livraison en 24 à 48h pour les commandes passées avant 15h.</li><li>Possibilité de livraison sur site pour les entreprises.</li><li>Suivi de commande en temps réel grâce à notre service client.</li><li>Options de livraison express pour les commandes urgentes.</li> </ul> </div><div class="flex flex-col border-2 border-gray-300 p-6 rounded-md"> <h4 class="font-bold text-gray-800 mb-4">Service après-vente</h4> <ul class="list-disc pl-5 space-y-2 text-gray-600"> <li>Support technique en cas de panne ou de problème matériel.</li><li>Garantie sur tous les produits achetés.</li><li>Assistance pour les échanges ou remboursements rapides.</li><li>Réparation ou remplacement des pièces défectueuses.</li> </ul> </div><div class="flex flex-col border-2 border-gray-300 p-6 rounded-md"> <h4 class="font-bold text-gray-800 mb-4">Installation et configuration</h4> <ul class="list-disc pl-5 space-y-2 text-gray-600"> <li>Assistance pour la configuration de vos ordinateurs et réseaux.</li><li>Installation sur site pour les clients professionnels.</li><li>Tests de performance et ajustement des paramètres.</li><li>Formation de base sur l’utilisation du matériel.</li> </ul> </div> </div> <div class="text-center mt-12"> <a href="/contact" class="inline-block px-8 py-4 bg-black text-white rounded-lg font-semibold hover:bg-gray-800 transition">
+Contactez-nous dès aujourd'hui
+</a> </div>  </div>  <footer class="my-20"> <p class="text-center text-sm text-slate-500">
+Copyright © 2024 ReisTech. Tout droit reservé.
+</p> <p class="text-center text-xs text-slate-500 mt-1">
+Fait par<a href="https://rt-informatique.com" target="_blank" rel="noopener" class="hover:underline">
+ReisTech
+</a> </p> <p class="text-center text-xs text-slate-500 mt-1"> <a href="/mentions-legales" target="_blank" rel="noopener" class="hover:underline">
+Mentions légales
+</a> </p> </footer>  </body> </html>
