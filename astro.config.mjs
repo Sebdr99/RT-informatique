@@ -7,8 +7,8 @@ import icon from 'astro-icon';
 
 
 export default defineConfig({
-  base: '/RT-informatique/', 
-  site: "https://Sebdr99.github.io/RT-informatique", 
+   
+  site: "https://Sebdr99.github.io", 
   integrations: [tailwind(), mdx(), sitemap(), icon()],
  
  
