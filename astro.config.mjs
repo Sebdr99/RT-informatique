@@ -2,14 +2,11 @@ import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
-import icon from 'astro-icon';
 
 
 
 export default defineConfig({
-   
-  site: "https://Sebdr99.github.io", 
-  integrations: [tailwind(), mdx(), sitemap(), icon()],
- 
- 
+  base: '/RT-informatique/', // Chemin de base pour GitHub Pages
+  site: 'https://sebdr99.github.io/RT-informatique', // URL complète de ton site
+  integrations: [tailwind(), mdx(), sitemap()],
 });
